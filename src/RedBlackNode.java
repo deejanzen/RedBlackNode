@@ -7,6 +7,7 @@ public class RedBlackNode {
     private String key;
     private RedBlackNode left;
     private RedBlackNode right;
+    private String internalName;
     private boolean color;
 
     public static RedBlackNode buildFrom234(Node234 root ){
@@ -66,6 +67,11 @@ public class RedBlackNode {
 
         return s;
 
+    }
+
+    //using hashCode per spec suggestion
+    private void setInternalName() {
+        internalName = "Vertex_" + hashCode();
     }
 
 }
