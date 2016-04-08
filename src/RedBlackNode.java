@@ -9,21 +9,95 @@ public class RedBlackNode {
     private RedBlackNode right;
     private boolean black;
     private String internalName;
+    private static RedBlackNode fake = new RedBlackNode(null, null, null, true, null);
 
-    public RedBlackNode(String key, RedBlackNode left, RedBlackNode right, boolean black){
+    public RedBlackNode(String key, RedBlackNode left, RedBlackNode right, boolean black, RedBlackNode fake){
         this.key = key;
         this.left = left;
         this.right = right;
         this.black = black;
+        this.fake = fake;
         internalName = "Vertex_" + hashCode();
     }
 
-    public static RedBlackNode buildFrom234(Node234 root){
+    public static RedBlackNode RedBlackNode(Node234 root){
         //Your program must turn all 2-3-4 nodes with 2 key
         //in to a left-leaning widget (that is, with the red node on the left)
         //However, you will enforce this only in this method; do not enforce it on insertions!
-        return new RedBlackNode(null, null, null, false);
+
+        RedBlackNode redBlackNodeRoot = new RedBlackNode(null, null, null, true, fake);
+        return buildFrom234Helper(root, redBlackNodeRoot );
+
     }
+
+    private static RedBlackNode buildFrom234Helper(Node234 current, RedBlackNode build ){
+        if (current.keyCount == 1){
+            //build widget
+            build.setKey(current.key1);
+            build.setBlack(true);
+
+            //leaf?
+            if (current.child1 == null && current.child2 == null ){
+                build.setLeft(fake);
+                build.setRight(fake);
+                return build;
+            }
+
+            //create new RB nodes to pass with recursive call
+            RedBlackNode blackNodeLeft = new RedBlackNode(null, null, null, true, null);
+            RedBlackNode blackNodeRight = new RedBlackNode(null, null, null, true, null);
+
+            //set widgets nodes
+            build.setLeft(blackNodeLeft);
+            build.setRight(blackNodeRight);
+
+            buildFrom234Helper(current.child1, blackNodeLeft );
+            buildFrom234Helper(current.child2, blackNodeRight);
+            return build;
+        }
+        else if (current.keyCount == 2){
+            //Build widget
+            //left leaning so key2 is root
+            build.setKey(current.key2);
+            build.setBlack(true);
+
+            //set black to false or not black thus red
+            RedBlackNode blackNodeLeft = new RedBlackNode(current.key1, null, null, false, null);
+            build.setLeft(blackNodeLeft);
+
+            //leaf
+            if (current.child1 == null && current.child2 == null && current.child3 == null){
+                build.setRight(fake);
+                blackNodeLeft.setLeft(fake);
+                blackNodeLeft.setRight(fake);
+                return build;
+            }
+
+            //create new RB nodes to pass with recursive call
+            RedBlackNode redNodeLeft = new RedBlackNode(null, null, null, true, null);
+            RedBlackNode redNodeRight = new RedBlackNode(null, null, null, true, null);
+            RedBlackNode blackNodeRight = new RedBlackNode(null, null, null, true, null);
+
+            //set widgets nodes
+            build.setRight(blackNodeRight);
+            build.getLeft().setLeft(redNodeLeft);
+            build.getLeft().setRight(redNodeRight);
+            //current.child1, toSetLeft.left : child2, toSetLeft.right : child3, build.right
+
+            buildFrom234Helper(current.child1, redNodeLeft);
+            buildFrom234Helper(current.child2, redNodeRight);
+            buildFrom234Helper(current.child2, blackNodeRight);
+            return build;
+        }
+        else { //has three keys
+            //build widget
+            build.setKey(current.key2);
+
+            return build;
+        }
+    }
+
+
 
     public String[] toArray(){
         String [] result = {};
@@ -36,11 +110,11 @@ public class RedBlackNode {
     }
 
     public RedBlackNode insert_td(String key){
-        return new RedBlackNode(null, null, null, false);
+        return new RedBlackNode(null, null, null, false, fake);
     }
 
     public RedBlackNode insert_bu(String key){
-        return new RedBlackNode(null, null, null, false);
+        return new RedBlackNode(null, null, null, false, fake);
     }
 
     //toDotFile is generating a digraph. Boolean parameter per spec but unused. Using two helpers for vertices and edges
@@ -115,6 +189,10 @@ public class RedBlackNode {
 
     public void setBlack(boolean black){
         this.black = black;
+    }
+
+    private RedBlackNode getFake(){
+        return fake;
     }
 
 }//end RedBlackNode
