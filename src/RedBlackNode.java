@@ -20,7 +20,7 @@ public class RedBlackNode {
         internalName = "Vertex_" + hashCode();
     }
 
-    public static RedBlackNode RedBlackNode(Node234 root){
+    public static RedBlackNode buildFrom234(Node234 root){
         //Your program must turn all 2-3-4 nodes with 2 key
         //in to a left-leaning widget (that is, with the red node on the left)
         //However, you will enforce this only in this method; do not enforce it on insertions!
@@ -61,7 +61,7 @@ public class RedBlackNode {
             build.setKey(current.key2);
             build.setBlack(true);
 
-            //set black to false or not black thus red
+            //blackNodeLeft = red per false in constructor
             RedBlackNode blackNodeLeft = new RedBlackNode(current.key1, null, null, false, null);
             build.setLeft(blackNodeLeft);
 
@@ -86,12 +86,47 @@ public class RedBlackNode {
 
             buildFrom234Helper(current.child1, redNodeLeft);
             buildFrom234Helper(current.child2, redNodeRight);
-            buildFrom234Helper(current.child2, blackNodeRight);
+            buildFrom234Helper(current.child3, blackNodeRight);
             return build;
         }
         else { //has three keys
             //build widget
             build.setKey(current.key2);
+            build.setBlack(true);
+
+            //both red per false
+            RedBlackNode blackNodeLeft = new RedBlackNode(current.key1, null, null, false, null);
+            RedBlackNode blackNodeRight = new RedBlackNode(current.key3, null, null, false, null);
+
+            build.setLeft(blackNodeLeft);
+            build.setRight(blackNodeRight);
+
+            //leaf
+            if (current.child1 == null && current.child2 == null &&
+                current.child3 == null && current.child4 == null    ){
+                blackNodeLeft.setLeft(fake);
+                blackNodeLeft.setRight(fake);
+                blackNodeRight.setLeft(fake);
+                blackNodeRight.setRight(fake);
+                return build;
+            }
+
+            //create new RB nodes to pass with recursive call
+            RedBlackNode redNodeLeftLeft = new RedBlackNode(null, null, null, true, null);
+            RedBlackNode redNodeLeftRight = new RedBlackNode(null, null, null, true, null);
+            RedBlackNode redNodeRightLeft = new RedBlackNode(null, null, null, true, null);
+            RedBlackNode redNodeRightRight = new RedBlackNode(null, null, null, true, null);
+
+            //set widgets nodes
+            build.getLeft().setLeft(redNodeLeftLeft);
+            build.getLeft().setRight(redNodeLeftRight);
+            build.getRight().setLeft(redNodeRightLeft);
+            build.getRight().setRight(redNodeRightRight);
+
+            buildFrom234Helper(current.child1, redNodeLeftLeft);
+            buildFrom234Helper(current.child2, redNodeLeftRight);
+            buildFrom234Helper(current.child3, redNodeRightLeft);
+            buildFrom234Helper(current.child4, redNodeRightRight);
 
             return build;
         }
@@ -119,15 +154,17 @@ public class RedBlackNode {
 
     //toDotFile is generating a digraph. Boolean parameter per spec but unused. Using two helpers for vertices and edges
     public String toDotFile(Boolean isRoot){
-        String result = "digraph {\n" + "\t" + getInternalName() + "[penwidth=3];\n" + toDotFileHelperLabel(new String(""));
+        String result = "digraph {\n" + "\t" + getInternalName() + "[penwidth=3 pencolor=yellow];\n" + toDotFileHelperLabel(new String(""));
         result += toDotFileHelperEdge(new String(""));
         return result + "}\n";
     }
 
+    //style=filled fillcolor=black fontcolor=white
     public String toDotFileHelperLabel(String s){
-        if (left == null && right == null) return s + "\t" + getInternalName() + "[label=" + getKey() +"];\n";
+        if (left == null && right == null)
+            return s + "\t" + getInternalName() + "[label=\"" + getKey() + "\" style=filled fillcolor=" + getColorAsString() +" fontcolor=white];\n";
 
-        s+= "\t" + getInternalName() + "[label=" + getKey() +"];\n";
+        s+= "\t" + getInternalName() + "[label=\"" + getKey() +"\" style=filled fillcolor=" + getColorAsString() +" fontcolor=white];\n";
         if (left != null) {
             s = getLeft().toDotFileHelperLabel(s);
         }
@@ -152,6 +189,11 @@ public class RedBlackNode {
 
         return s;
 
+    }
+
+    private String getColorAsString(){
+        if (this.getBlack() == true) return "black";
+        return "red";
     }
 
     public String getKey(){
