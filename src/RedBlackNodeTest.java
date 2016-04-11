@@ -51,8 +51,13 @@ public class RedBlackNodeTest {
 
         System.out.print("\n" + root1.toDotFile(true));
         String [] temp = root1.toArray();
+        String [] temp0 = root1.toArray_preOrder();
         for (int i = 0; i < temp.length; i++){
             System.out.print(temp[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < temp0.length; i++){
+            System.out.print(temp0[i]);
         }
 
 

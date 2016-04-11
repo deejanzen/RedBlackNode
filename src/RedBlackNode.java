@@ -152,7 +152,7 @@ public class RedBlackNode {
 
     private List<String> toArrayHelper(RedBlackNode current, List<String> result){
         if (current.getLeft().getKey().equals(FAKE_NODE) &&
-        current.getRight().getKey().equals(FAKE_NODE)    ){
+           current.getRight().getKey().equals(FAKE_NODE)    ){
             return writeToArray(current, result);
         }
 
@@ -175,7 +175,25 @@ public class RedBlackNode {
     }
 
     public String[] toArray_preOrder(){
-        String [] result = {};
+        List<String> temp = toArray_preOrderHelper(this, new ArrayList<>());
+        String [] result = new String [temp.size()];
+        return temp.toArray(result);
+    }
+
+    private List<String> toArray_preOrderHelper(RedBlackNode current, List<String> result){
+        if (current.getLeft().getKey().equals(FAKE_NODE) &&
+           current.getRight().getKey().equals(FAKE_NODE)    ){
+            return writeToArray(current, result);
+        }
+
+        result = writeToArray(current, result);
+
+        if (!current.getLeft().getKey().equals(FAKE_NODE))
+            result = toArrayHelper(current.getLeft(), result);
+
+        if (!current.getRight().getKey().equals(FAKE_NODE))
+            result = toArrayHelper(current.getRight(), result);
+
         return result;
     }
 
