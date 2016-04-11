@@ -18,8 +18,9 @@ public class RedBlackNodeTest {
         RedBlackNode root = RedBlackNode.buildFrom234(oneKey);
 
         assertEquals( true, root.getBlack());
-        assertEquals( null, root.getRight().getKey());
+        assertEquals( RedBlackNode.FAKE_NODE, root.getRight().getKey());
         assertEquals( "one", root.getKey());
+        assertEquals(null,root.getRight().getRight());
 
         Node234 [] twoKeychildren = {null, null, null};
         Node234 twoKey = new Node234(twokeys, twoKeychildren);
@@ -43,5 +44,21 @@ public class RedBlackNodeTest {
         assertEquals(false, root1.getRight().getBlack());
 
         System.out.print("\n" + root1.toDotFile(true));
+
+        oneKey.child1 = threeKey;
+        oneKey.child2 = twoKey;
+
+
+        System.out.print("\n" + root1.toDotFile(true));
+        String [] temp = root1.toArray();
+        for (int i = 0; i < temp.length; i++){
+            System.out.print(temp[i]);
+        }
+
+
+    }
+
+    public void insertTDTests(){
+        RedBlackNode root = new RedBlackNode("c", null, null, true, true);
     }
 }
