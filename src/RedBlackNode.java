@@ -169,7 +169,7 @@ public class RedBlackNode {
     }
 
     private List<String> writeToArray(RedBlackNode current, List<String> result){
-        if (current.getBlack())  result.add("b: " + current.getKey() + " ");
+        if (current.isBlack())  result.add("b: " + current.getKey() + " ");
         else                     result.add("r: " + current.getKey() + " ");
         return result;
     }
@@ -198,7 +198,64 @@ public class RedBlackNode {
     }
 
     public RedBlackNode insert_td(String key){
-        return new RedBlackNode(null, null, null, false, false);
+        this.setIsRoot(true);
+        return insert_tdHelper(this,key);
+    }
+    private RedBlackNode insert_tdHelper(RedBlackNode current, String key){
+        //push black down
+        pushBlackDown(current);
+
+        //base
+        //case 2
+        if (key.compareTo(current.getKey()) < 0          &&
+            current.getLeft().getKey().equals(FAKE_NODE) &&
+            current.isBlack() == true                       ){
+                current.setLeft(new RedBlackNode(key, fake, fake, false, false));
+                return current;
+        }
+        //base
+        //case 2
+        if (key.compareTo(current.getKey()) > 0           &&
+            current.getRight().getKey().equals(FAKE_NODE) &&
+            current.isBlack() == true                        ){
+                current.setRight(new RedBlackNode(key, fake, fake, false, false));
+                return current;
+        }
+
+        //base
+        //case 4 inner child black uncle
+        //left-right rotate
+        if ( key.compareTo(current.getKey()) < 0            &&
+             key.compareTo(current.getLeft().getKey()) > 0  &&
+             current.getLeft().isBlack() == false           &&
+             current.getRight().getKey().equals(FAKE_NODE)  &&
+             current.getRight().getKey().equals(FAKE_NODE)      ){
+                RedBlackNode newRightNode = new RedBlackNode(current.getKey(),fake, current.getRight(), false, false);
+                current.setKey(key);
+                current.setRight(newRightNode);
+                return current;
+        }
+
+        //duplicate checking
+        if (key.compareTo(current.getKey()) == 0) throw new IllegalArgumentException();
+
+        //recurse
+        if (key.compareTo(current.getKey()) < 0)
+            return insert_tdHelper(current.getLeft(), key);
+        else
+            return insert_tdHelper(current.getRight(), key);
+
+    }//end insert_tdHelper
+
+    private void pushBlackDown(RedBlackNode current){
+        if (current.getLeft() != null && current.getLeft().isBlack()  == false &&
+           current.getRight() != null && current.getRight().isBlack() == false    ){
+            //TODO check current is black?
+            if (current.isRoot == false)
+                current.setBlack(false);
+            current.getLeft().setBlack(true);
+            current.getRight().setBlack(true);
+        }
     }
 
     public RedBlackNode insert_bu(String key){
@@ -245,7 +302,7 @@ public class RedBlackNode {
     }
 
     private String getColorAsString(){
-        if (this.getBlack() == true) return "black";
+        if (this.isBlack() == true) return "black";
         return "red";
     }
 
@@ -278,7 +335,7 @@ public class RedBlackNode {
         return internalName;
     }
 
-    public boolean getBlack(){
+    public boolean isBlack(){
         return black;
     }
 
@@ -288,6 +345,9 @@ public class RedBlackNode {
 
     private boolean isRoot(){
         return isRoot;
+    }
+    private void setIsRoot(boolean isRoot){
+        this.isRoot = isRoot;
     }
 
 }//end RedBlackNode

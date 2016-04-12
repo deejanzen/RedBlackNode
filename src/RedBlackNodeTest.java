@@ -17,7 +17,7 @@ public class RedBlackNodeTest {
 
         RedBlackNode root = RedBlackNode.buildFrom234(oneKey);
 
-        assertEquals( true, root.getBlack());
+        assertEquals( true, root.isBlack());
         assertEquals( RedBlackNode.FAKE_NODE, root.getRight().getKey());
         assertEquals( "one", root.getKey());
         assertEquals(null,root.getRight().getRight());
@@ -28,20 +28,20 @@ public class RedBlackNodeTest {
 
         RedBlackNode root0 = RedBlackNode.buildFrom234(twoKey);
         assertEquals("Two", root0.getKey());
-        assertEquals(true, root0.getBlack());
+        assertEquals(true, root0.isBlack());
         assertEquals("one", root0.getLeft().getKey());
-        assertEquals(false, root0.getLeft().getBlack());
+        assertEquals(false, root0.getLeft().isBlack());
 
         Node234 [] threeKeyChildren = {null, null, null, null};
         Node234 threeKey = new Node234(threekeys, threeKeyChildren);
 
         RedBlackNode root1 = RedBlackNode.buildFrom234(threeKey);
         assertEquals("Two", root1.getKey());
-        assertEquals(true, root1.getBlack());
+        assertEquals(true, root1.isBlack());
         assertEquals("one", root1.getLeft().getKey());
-        assertEquals(false, root1.getLeft().getBlack());
+        assertEquals(false, root1.getLeft().isBlack());
         assertEquals("Three", root1.getRight().getKey());
-        assertEquals(false, root1.getRight().getBlack());
+        assertEquals(false, root1.getRight().isBlack());
 
         System.out.print("\n" + root1.toDotFile(true));
 
@@ -62,8 +62,17 @@ public class RedBlackNodeTest {
 
 
     }
-
+    @Test
     public void insertTDTests(){
-        RedBlackNode root = new RedBlackNode("c", null, null, true, true);
+        String FAKE_NODE = "CDs Fake Nodes";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+        RedBlackNode root = new RedBlackNode("c", fake, fake, true, true);
+
+        root.insert_td("a");
+        root.insert_td("b");
+//        root.insert_td("d");
+//        root.insert_td("B");
+//        root.insert_td("A");
+        System.out.print("\n" + root.toDotFile(true));
     }
 }
