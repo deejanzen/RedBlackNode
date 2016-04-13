@@ -169,8 +169,8 @@ public class RedBlackNode {
     }
 
     private List<String> writeToArray(RedBlackNode current, List<String> result){
-        if (current.isBlack())  result.add("b: " + current.getKey() + " ");
-        else                     result.add("r: " + current.getKey() + " ");
+        if (current.isBlack())  result.add("b:" + current.getKey() + " ");
+        else                     result.add("r:" + current.getKey() + " ");
         return result;
     }
 
@@ -189,20 +189,20 @@ public class RedBlackNode {
         result = writeToArray(current, result);
 
         if (!current.getLeft().getKey().equals(FAKE_NODE))
-            result = toArrayHelper(current.getLeft(), result);
+            result = toArray_preOrderHelper(current.getLeft(), result);
 
         if (!current.getRight().getKey().equals(FAKE_NODE))
-            result = toArrayHelper(current.getRight(), result);
+            result = toArray_preOrderHelper(current.getRight(), result);
 
         return result;
     }
 
     public RedBlackNode insert_td(String key){
         this.setIsRoot(true);
-        return insert_tdHelper(this,key);
+        return cleanup(insert_tdHelper(this,key));
     }
     private RedBlackNode insert_tdHelper(RedBlackNode current, String key){
-
+        pushBlackDown(current);
         //base
         if (key.compareTo(current.getKey()) < 0          &&
             current.getLeft().getKey().equals(FAKE_NODE)    ){
@@ -221,19 +221,69 @@ public class RedBlackNode {
         if (key.compareTo(current.getKey()) == 0) throw new IllegalArgumentException();
 
         //recurse
-        if (key.compareTo(current.getKey()) < 0)
-            return insert_tdHelper(current.getLeft(), key);
-        else
-            return insert_tdHelper(current.getRight(), key);
-
+        if (key.compareTo(current.getKey()) < 0){
+            cleanup(insert_tdHelper(current.getLeft(), key));
+            return current;
+        }
+        else{
+            cleanup(insert_tdHelper(current.getRight(), key));
+            return current;
+        }
     }//end insert_tdHelper
+
+    public RedBlackNode insert_bu(String key){
+        this.setIsRoot(true);
+        return cleanup(pushBlackDown(insert_buHelper(this,key)));
+    }
+
+    private RedBlackNode insert_buHelper(RedBlackNode current, String key){
+
+        //base
+        if (key.compareTo(current.getKey()) < 0          &&
+        current.getLeft().getKey().equals(FAKE_NODE)    ){
+            current.setLeft(new RedBlackNode(key, fake, fake, false, false));
+            return current;
+        }
+        //base
+
+        if (key.compareTo(current.getKey()) > 0           &&
+        current.getRight().getKey().equals(FAKE_NODE)    ){
+            current.setRight(new RedBlackNode(key, fake, fake, false, false));
+            return current;
+        }
+
+        //duplicate checking
+        if (key.compareTo(current.getKey()) == 0) throw new IllegalArgumentException();
+
+        //recurse
+        if (key.compareTo(current.getKey()) < 0){
+            cleanup(pushBlackDown(insert_tdHelper(current.getLeft(), key)));
+            return current;
+        }
+        else{
+            cleanup(pushBlackDown(insert_tdHelper(current.getRight(), key)));
+            return current;
+        }
+    }//end insert_buHelper
+
+    public static RedBlackNode cleanup(RedBlackNode current){
+        fixupRotateToRight(current);
+        fixupRotateToLeftThenRight(current);
+        fixupRotateToLeft(current);
+        fixupRotateToRightThenLeft(current);
+        return current;
+    }
 
     public static void fixupRotateToRight(RedBlackNode current){
         if ( current.isBlack() == true                      &&
              current.getRight().isBlack() == true           &&
              current.getLeft().isBlack() == false           &&
              current.getLeft().getLeft().isBlack() == false    ){
-                current.setRight(new RedBlackNode(current.getKey(), current.getLeft().getRight(), current.getRight(), false, false));
+                current.setRight(new RedBlackNode(current.getKey(),
+                                                  current.getLeft().getRight(),
+                                                  current.getRight(),
+                                                  false,
+                                                  false));
                 current.setKey(current.getLeft().getKey());
                 current.setLeft(current.getLeft().getLeft());
 //                current.getLeft().setKey(current.getLeft().getLeft().getKey());
@@ -246,34 +296,52 @@ public class RedBlackNode {
             current.getRight().isBlack() == true           &&
             current.getLeft().isBlack() == false           &&
             current.getLeft().getRight().isBlack() == false    ){
-                current.setRight(new RedBlackNode(current.getKey(), current.getLeft().getRight().getRight(), current.getRight(), false, false));
+                current.setRight(new RedBlackNode(current.getKey(),
+                                                  current.getLeft().getRight().getRight(),
+                                                  current.getRight(),
+                                                  false,
+                                                  false));
                 current.setKey(current.getLeft().getRight().getKey());
                 current.getLeft().setRight(current.getLeft().getRight().getLeft());
 
 
         }
     }
-
+    //TODO fix this
     public static void fixupRotateToLeft(RedBlackNode current){
         if ( current.isBlack() == true                        &&
              current.getLeft().isBlack() == true              &&
              current.getRight().isBlack() == false            &&
              current.getRight().getRight().isBlack() == false    ){
-                current.setLeft(new RedBlackNode(current.getKey(), current.getLeft(), fake , false, false));
+                current.setLeft(new RedBlackNode(current.getKey(),
+                                                 current.getLeft(),
+                                                 current.getRight().getLeft() ,
+                                                 false,
+                                                 false));
                 current.setKey(current.getRight().getKey());
-                current.getRight().setKey(current.getRight().getRight().getKey());
-                //rehang
                 current.getLeft().setRight(current.getRight().getLeft());
-                //save the New nodes L & R
-                current.getRight().setLeft(current.getRight().getRight().getLeft());
-                current.getRight().setRight(current.getRight().getRight().getRight());
+                current.setRight(current.getRight().getRight());
+
+
         }
     }
 
-    public static void fixupRotateToRightThenLeft(){
-
+    public static void fixupRotateToRightThenLeft(RedBlackNode current){
+        if ( current.isBlack() == true                        &&
+             current.getLeft().isBlack() == true              &&
+             current.getRight().isBlack() == false            &&
+             current.getRight().getLeft().isBlack() == false    ){
+                current.setLeft(new RedBlackNode(current.getKey(),
+                                                 current.getLeft(),
+                                                 current.getRight().getLeft().getLeft(),
+                                                 false,
+                                                 false
+                                                                                        ));
+                current.setKey(current.getRight().getLeft().getKey());
+                current.getRight().setLeft(current.getRight().getLeft().getRight());
+        }
     }
-    private void pushBlackDown(RedBlackNode current){
+    private static RedBlackNode pushBlackDown(RedBlackNode current){
         if (current.getLeft() != null && current.getLeft().isBlack()  == false &&
            current.getRight() != null && current.getRight().isBlack() == false    ){
             //TODO check current is black?
@@ -282,11 +350,10 @@ public class RedBlackNode {
             current.getLeft().setBlack(true);
             current.getRight().setBlack(true);
         }
+        return current;
     }
 
-    public RedBlackNode insert_bu(String key){
-        return new RedBlackNode(null, null, null, false, false);
-    }
+
 
     //toDotFile is generating a digraph. Boolean parameter per spec but unused. Using two helpers for vertices and edges
     public String toDotFile(Boolean isRoot){

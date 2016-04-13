@@ -70,9 +70,9 @@ public class RedBlackNodeTest {
 
         root.insert_td("a");
         root.insert_td("b");
-//        root.insert_td("d");
-//        root.insert_td("B");
-//        root.insert_td("A");
+        root.insert_td("d");
+        root.insert_td("B");
+        root.insert_td("A");
         System.out.print("\n" + root.toDotFile(true));
     }
     @Test public void case4TEst(){
@@ -89,9 +89,28 @@ public class RedBlackNodeTest {
         root.insert_td("C");
         root.insert_td("A");
         root.insert_td("c");
+        root.insert_td("b");
+        root.insert_td("D");
+        root.insert_td("E");
+        root.insert_td("h");
+        root.insert_td("i");
+        root.insert_td("j");
+        root.insert_td("F");
 
         System.out.print("\n" + root.toDotFile(true));
+
+        String [] preOrder = root.toArray_preOrder();
+        for (int i = 0; i< preOrder.length;i++){
+            System.out.print(preOrder[i]);
+        }
+
+        System.out.println();
+        String [] inOrder = root.toArray();
+        for (int i = 0; i< inOrder.length;i++){
+            System.out.print(inOrder[i]);
+        }
     }
+
 
     @Test public void case5Test0(){
         String FAKE_NODE = "NULL";
@@ -159,6 +178,60 @@ public class RedBlackNodeTest {
         root.setRight(parent);
         parent.setRight(newChile);
         RedBlackNode.fixupRotateToLeft(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+    @Test
+    public void TestfixupRotateToRightThenLeft(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("B", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, true, true);
+        RedBlackNode parent = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("C", fake, fake, false, true);
+
+        root.setLeft(uncle);
+        root.setRight(parent);
+        parent.setLeft(newChile);
+        RedBlackNode.fixupRotateToRightThenLeft(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+    @Test
+    public void insert_buTests(){
+        String FAKE_NODE = RedBlackNode.FAKE_NODE;
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+        RedBlackNode root = new RedBlackNode("c", fake, fake, true, true);
+
+        root.insert_bu("a");
+        root.insert_bu("b");
+        root.insert_bu("d");
+        root.insert_bu("B");
+        root.insert_bu("A");
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test
+    public void Moreinsert_buTests(){
+        String FAKE_NODE = RedBlackNode.FAKE_NODE;
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+        RedBlackNode root = new RedBlackNode("f", fake, fake, true, true);
+
+        root.insert_bu("g");
+
+        root.insert_bu("d");
+        root.insert_bu("a");
+        root.insert_bu("e");
+        root.insert_bu("B");
+        root.insert_bu("C");
+        root.insert_bu("A");
+        root.insert_bu("c");
+        root.insert_bu("b");
+        root.insert_bu("D");
+        root.insert_bu("E");
+        root.insert_bu("h");
+        root.insert_bu("i");
+        root.insert_bu("j");
+        root.insert_bu("F");
         System.out.print("\n" + root.toDotFile(true));
     }
 }
