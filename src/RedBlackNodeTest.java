@@ -64,7 +64,7 @@ public class RedBlackNodeTest {
     }
     @Test
     public void insertTDTests(){
-        String FAKE_NODE = "CDs Fake Nodes";
+        String FAKE_NODE = RedBlackNode.FAKE_NODE;
         RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
         RedBlackNode root = new RedBlackNode("c", fake, fake, true, true);
 
@@ -73,6 +73,92 @@ public class RedBlackNodeTest {
 //        root.insert_td("d");
 //        root.insert_td("B");
 //        root.insert_td("A");
+        System.out.print("\n" + root.toDotFile(true));
+    }
+    @Test public void case4TEst(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+        RedBlackNode root = new RedBlackNode("f", fake, fake, true, true);
+
+        root.insert_td("g");
+
+        root.insert_td("d");
+        root.insert_td("a");
+        root.insert_td("e");
+        root.insert_td("B");
+        root.insert_td("C");
+        root.insert_td("A");
+        root.insert_td("c");
+
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test public void case5Test0(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("D", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("E", fake, fake, true, true);
+        RedBlackNode parent = new RedBlackNode("C", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("B", fake, fake, false, true);
+
+        root.setLeft(parent);
+        root.setRight(uncle);
+        parent.setLeft(newChile);
+
+        RedBlackNode.fixupRotateToRight(root);
+
+
+
+        System.out.print("\n" + root.toDotFile(true));
+    }
+    @Test
+    public void TestfixupRotateToRight(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("C", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("D", fake, fake, true, true);
+        RedBlackNode parent = new RedBlackNode("B", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("A", fake, fake, false, true);
+
+        root.setRight(uncle);
+        root.setLeft(parent);
+        parent.setLeft(newChile);
+        RedBlackNode.fixupRotateToRight(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test
+    public void TestfixupRotateToLeftThenRight(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("C", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("D", fake, fake, true, true);
+        RedBlackNode parent = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("B", fake, fake, false, true);
+
+        root.setRight(uncle);
+        root.setLeft(parent);
+        parent.setRight(newChile);
+        RedBlackNode.fixupRotateToLeftThenRight(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+    @Test
+    public void testfixupRotateToLeft(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("B", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, true, true);
+        RedBlackNode parent = new RedBlackNode("C", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("D", fake, fake, false, true);
+
+        root.setLeft(uncle);
+        root.setRight(parent);
+        parent.setRight(newChile);
+        RedBlackNode.fixupRotateToLeft(root);
         System.out.print("\n" + root.toDotFile(true));
     }
 }
