@@ -393,5 +393,198 @@ public class RedBlackNodeTest {
 
 
     }
+    @Test
+    public void insertBUTestsAnother(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("J", fake, fake, true, true);
+
+        root.insert_bu("F");
+        root.insert_bu("M");
+        root.insert_bu("C");
+        root.insert_bu("H");
+        root.insert_bu("L");
+        root.insert_bu("O");
+        root.insert_bu("A");
+        root.insert_bu("D");
+        root.insert_bu("G");
+        root.insert_bu("I");
+        root.insert_bu("K");
+        root.insert_bu("L2");
+        root.insert_bu("N");
+        root.insert_bu("P");
+
+        String fromTest = "r:A b:C r:D r:F r:G b:H r:I b:J r:K b:L r:L2 r:M r:N b:O r:P";
+        System.out.println("from test then mine");
+        System.out.println(fromTest);
+        String [] inOrder = root.toArray();
+        for (int i =0; i < inOrder.length;i++){
+            System.out.print(inOrder[i] );
+        }
+
+    }
+    @Test
+    public void insertBUTestsAnotherAnother(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("A", fake, fake, true, true);
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("B");
+        printToArray(root);
+        System.out.println("b:A r:B");
+        System.out.println();
+
+        root.insert_bu("C");
+        printToArray(root);
+        System.out.println("r:A b:B r:C");
+        System.out.println();
+
+        root.insert_bu("D");
+        printToArray(root);
+        System.out.println("b:A b:B b:C r:D");
+        System.out.println();
+
+        root.insert_bu("E");
+        printToArray(root);
+        System.out.println("b:A b:B r:C b:D r:E");
+        System.out.println();
+
+        root.insert_bu("F");
+        printToArray(root);
+        System.out.println("b:A b:B b:C r:D b:E r:F");
+        System.out.println();
+
+        root.insert_bu("G");
+        printToArray(root);
+        System.out.println("b:A b:B b:C r:D r:E b:F r:G");
+        System.out.println();
+
+        root.insert_bu("H");
+        printToArray(root);
+        System.out.println("b:A r:B b:C b:D b:E r:F b:G r:H");
+        System.out.println();
+//        System.out.print("\n" + root.toDotFile(true));
+
+        root.insert_bu("I");
+        printToArray(root);
+        System.out.println("b:A r:B b:C b:D b:E r:F r:G b:H r:I");
+        System.out.println();
+//        System.out.print("\n" + root.toDotFile(true));
+
+        root.insert_bu("J");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E b:F b:G r:H b:I r:J");
+        System.out.println();
+
+        root.insert_bu("K");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E b:F b:G r:H r:I b:J r:K");
+        System.out.println();
+
+        root.insert_bu("L");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E r:F b:G b:H b:I r:J b:K r:L");
+        System.out.println();
+
+        root.insert_bu("M");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E r:F b:G b:H b:I r:J r:K b:L r:M");
+        System.out.println();
+
+        root.insert_bu("N");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E b:F b:G r:H b:I b:J b:K r:L b:M r:N");
+        System.out.println();
+
+        root.insert_bu("O");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E b:F b:G r:H b:I b:J b:K r:L r:M b:N r:O");
+        System.out.println();
+
+        root.insert_bu("P");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E b:F b:G r:H b:I r:J b:K b:L b:M r:N b:O r:P");
+        System.out.println();
+        System.out.print("\n" + root.toDotFile(true));
+
+        root.insert_bu("Q");
+        printToArray(root);
+        System.out.println("b:A b:B b:C b:D b:E b:F b:G r:H b:I r:J b:K b:L b:M r:N r:O b:P r:Q");
+        System.out.println();
+        System.out.print("\n" + root.toDotFile(true));
+
+        root.insert_bu("R");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("S");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("T");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("U");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("V");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("W");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("X");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("Y");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+        root.insert_bu("Z");
+        printToArray(root);
+        System.out.println("b:A");
+        System.out.println();
+
+//        String fromTest = "b:A b:B b:C b:D b:E b:F b:G b:H b:I b:J b:K r:L b:M b:N b:O b:P b:Q b:R b:S r:T b:U b:V b:W r:X b:Y r:Z";
+//        System.out.println("from test then mine");
+//        System.out.println(fromTest);
+//        String [] inOrder = root.toArray();
+//        for (int i =0; i < inOrder.length;i++){
+//            System.out.print(inOrder[i] );
+//        }
+//        System.out.println();
+//        System.out.print("\n" + root.toDotFile(true));
+
+    }
+    public static void printToArray(RedBlackNode root){
+        String [] inOrder = root.toArray();
+        for (int i =0; i < inOrder.length;i++){
+            System.out.print(inOrder[i] );
+        }
+        System.out.println();
+//        String [] preOrder = root.toArray();
+//        for (int i =0; i < preOrder.length;i++){
+//            System.out.print(inOrder[i] );
+//        }
+
+    }
 
 }

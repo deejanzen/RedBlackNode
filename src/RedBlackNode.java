@@ -181,8 +181,8 @@ public class RedBlackNode {
     }
 
     private List<String> writeToArray(RedBlackNode current, List<String> result){
-        if (current.isBlack())  result.add("b:" + current.getKey() + " ");
-        else                     result.add("r:" + current.getKey() + " ");
+        if (current.isBlack())  result.add("b:" + current.getKey() );
+        else                     result.add("r:" + current.getKey() );
         return result;
     }
 
@@ -286,11 +286,11 @@ public class RedBlackNode {
 
         //recurse
         if (key.compareTo(current.getKey()) < 0){
-            cleanup(pushBlackDownBU(insert_tdHelper(current.getLeft(), key)));
+            cleanup(pushBlackDownBU(insert_buHelper(current.getLeft(), key)));
             return current;
         }
         else{
-            cleanup(pushBlackDownBU(insert_tdHelper(current.getRight(), key)));
+            cleanup(pushBlackDownBU(insert_buHelper(current.getRight(), key)));
             return current;
         }
     }//end insert_buHelper
