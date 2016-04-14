@@ -233,7 +233,7 @@ public class RedBlackNode {
 
     public RedBlackNode insert_bu(String key){
         this.setIsRoot(true);
-        return cleanup(pushBlackDown(insert_buHelper(this,key)));
+        return cleanup(pushBlackDownBU(insert_buHelper(this,key)));
     }
 
     private RedBlackNode insert_buHelper(RedBlackNode current, String key){
@@ -257,11 +257,11 @@ public class RedBlackNode {
 
         //recurse
         if (key.compareTo(current.getKey()) < 0){
-            cleanup(pushBlackDown(insert_tdHelper(current.getLeft(), key)));
+            cleanup(pushBlackDownBU(insert_tdHelper(current.getLeft(), key)));
             return current;
         }
         else{
-            cleanup(pushBlackDown(insert_tdHelper(current.getRight(), key)));
+            cleanup(pushBlackDownBU(insert_tdHelper(current.getRight(), key)));
             return current;
         }
     }//end insert_buHelper
@@ -272,6 +272,57 @@ public class RedBlackNode {
         fixupRotateToLeft(current);
         fixupRotateToRightThenLeft(current);
         return current;
+    }
+
+    public static RedBlackNode pushBlackDownBU(RedBlackNode current){
+        fixupRedLL(current);
+        fixupRedLR(current);
+        fixupRedRR(current);
+        fixupRedRL(current);
+        return current;
+    }
+    public static void fixupRedLL(RedBlackNode current){
+        if ( current.isBlack() == true                      &&
+        current.getRight().isBlack() == false           &&
+        current.getLeft().isBlack() == false           &&
+        current.getLeft().getLeft().isBlack() == false    ){
+            if (current.isRoot() == false) current.setBlack(false);
+            current.getLeft().setBlack(true);
+            current.getRight().setBlack(true);
+        }
+    }
+
+    public static void fixupRedLR(RedBlackNode current){
+        if ( current.isBlack() == true                      &&
+        current.getRight().isBlack() == false           &&
+        current.getLeft().isBlack() == false           &&
+        current.getLeft().getRight().isBlack() == false    ){
+            if (current.isRoot() == false) current.setBlack(false);
+            current.getLeft().setBlack(true);
+            current.getRight().setBlack(true);
+        }
+    }
+
+    public static void fixupRedRR(RedBlackNode current){
+        if ( current.isBlack() == true                      &&
+        current.getRight().isBlack() == false           &&
+        current.getLeft().isBlack() == false           &&
+        current.getRight().getRight().isBlack() == false    ){
+            if (current.isRoot() == false) current.setBlack(false);
+            current.getLeft().setBlack(true);
+            current.getRight().setBlack(true);
+        }
+    }
+
+    public static void fixupRedRL(RedBlackNode current){
+        if ( current.isBlack() == true                      &&
+        current.getRight().isBlack() == false           &&
+        current.getLeft().isBlack() == false           &&
+        current.getRight().getLeft().isBlack() == false    ){
+            if (current.isRoot() == false) current.setBlack(false);
+            current.getLeft().setBlack(true);
+            current.getRight().setBlack(true);
+        }
     }
 
     public static void fixupRotateToRight(RedBlackNode current){

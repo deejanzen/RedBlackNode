@@ -234,4 +234,164 @@ public class RedBlackNodeTest {
         root.insert_bu("F");
         System.out.print("\n" + root.toDotFile(true));
     }
+    @Test
+    public void testfixupRedLLatRoot(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("B", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("C", fake, fake, false, true);
+
+        root.setLeft(parent);
+        root.setRight(uncle);
+        parent.setLeft(newChile);
+        RedBlackNode.fixupRedLL(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test
+    public void testfixupRedLL(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode internal = new RedBlackNode("B", fake, fake, true, false);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("C", fake, fake, false, true);
+
+        internal.setLeft(parent);
+        internal.setRight(uncle);
+        parent.setLeft(newChile);
+        RedBlackNode.fixupRedLL(internal);
+        System.out.print("\n" + internal.toDotFile(true));
+    }
+    @Test
+    public void testfixupRedLRatRoot(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("C", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("B", fake, fake, false, true);
+
+        root.setLeft(parent);
+        root.setRight(uncle);
+        parent.setRight(newChile);
+        RedBlackNode.fixupRedLR(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test
+    public void testfixupRedLR(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode internal = new RedBlackNode("C", fake, fake, true, false);
+        RedBlackNode uncle = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("B", fake, fake, false, true);
+
+        internal.setLeft(parent);
+        internal.setRight(uncle);
+        parent.setRight(newChile);
+        RedBlackNode.fixupRedLR(internal);
+        System.out.print("\n" + internal.toDotFile(true));
+    }
+
+    @Test
+    public void testfixupRedRRatRoot(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("B", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("C", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("D", fake, fake, false, true);
+
+        root.setLeft(uncle);
+        root.setRight(parent);
+        parent.setRight(newChile);
+        RedBlackNode.fixupRedRR(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test
+    public void testfixupRedRR(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode internal = new RedBlackNode("B", fake, fake, true, false);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("C", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("D", fake, fake, false, true);
+
+        internal.setLeft(uncle);
+        internal.setRight(parent);
+        parent.setRight(newChile);
+        RedBlackNode.fixupRedRR(internal);
+        System.out.print("\n" + internal.toDotFile(true));
+    }
+
+    @Test
+    public void testfixupRedRLatRoot(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("B", fake, fake, true, true);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("C", fake, fake, false, true);
+
+        root.setLeft(uncle);
+        root.setRight(parent);
+        parent.setLeft(newChile);
+        RedBlackNode.fixupRedRL(root);
+        System.out.print("\n" + root.toDotFile(true));
+    }
+
+    @Test
+    public void testfixupRedRL(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode internal = new RedBlackNode("B", fake, fake, true, false);
+        RedBlackNode uncle = new RedBlackNode("A", fake, fake, false, true);
+        RedBlackNode parent = new RedBlackNode("D", fake, fake, false, true);
+        RedBlackNode newChile = new RedBlackNode("C", fake, fake, false, true);
+
+        internal.setLeft(uncle);
+        internal.setRight(parent);
+        parent.setLeft(newChile);
+        RedBlackNode.fixupRedRL(internal);
+        System.out.print("\n" + internal.toDotFile(true));
+    }
+
+    @Test
+    public void insertBUTestsMore(){
+        String FAKE_NODE = "NULL";
+        RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
+
+        RedBlackNode root = new RedBlackNode("200", fake, fake, true, true);
+        root.insert_bu("100");
+
+        root.insert_bu("300");
+        root.insert_bu("050");
+        root.insert_bu("150");
+        root.insert_bu("250");
+        root.insert_bu("350");
+//        root.insert_bu("025");
+        //root.insert_bu("375");
+        System.out.print("\n" + root.toDotFile(true));
+
+        String [] inOrder = root.toArray();
+        for (int i =0; i < inOrder.length;i++){
+            System.out.print(inOrder[i] + " ");
+        }
+
+
+    }
+
 }
