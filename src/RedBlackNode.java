@@ -2,11 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RedBlackNode
+ * RedBlackNode implements a red-black tree. Two insert strategy.
  * @author Dustin Janzen
  */
-
-
 public class RedBlackNode {
     final static String FAKE_NODE = "NULL";
 
@@ -19,7 +17,14 @@ public class RedBlackNode {
     private static RedBlackNode fake = new RedBlackNode(FAKE_NODE, null, null, true, false);
 
 
-
+    /**
+     * RedBlackNode's constructor
+     * @param key String to be set
+     * @param left Ref to left child
+     * @param right REf to right child
+     * @param black true if black, false otherwise
+     * @param isRoot true if the root, false otherwise
+     */
     public RedBlackNode(String key, RedBlackNode left, RedBlackNode right, boolean black, boolean isRoot){
         this.key = key;
         this.left = left;
@@ -29,6 +34,11 @@ public class RedBlackNode {
         internalName = "Vertex_" + hashCode();
     }
 
+    /**
+     * Builds a Red-Black tree from a 2-3-4 Tree
+     * @param root The root of 2-3-4 Tree
+     * @return the RB root
+     */
     public static RedBlackNode buildFrom234(Node234 root){
         //Your program must turn all 2-3-4 nodes with 2 key
         //in to a left-leaning widget (that is, with the red node on the left)
@@ -142,10 +152,12 @@ public class RedBlackNode {
         }
     }
 
-
-
+    /**
+     * toArray returns an array of String after an in-order traversal of RB tree
+     * @return
+     */
     public String[] toArray(){
-        List<String> temp = toArrayHelper(this, new ArrayList<>());
+        List<String> temp = toArrayHelper(this, new ArrayList<String>());
         String [] result = new String [temp.size()];
         return temp.toArray(result);
     }
@@ -174,8 +186,12 @@ public class RedBlackNode {
         return result;
     }
 
+    /**
+     * toArray_preOrder returns an array of String after an pre-order traversal of RB tree
+     * @return
+     */
     public String[] toArray_preOrder(){
-        List<String> temp = toArray_preOrderHelper(this, new ArrayList<>());
+        List<String> temp = toArray_preOrderHelper(this, new ArrayList<String>());
         String [] result = new String [temp.size()];
         return temp.toArray(result);
     }
@@ -197,6 +213,12 @@ public class RedBlackNode {
         return result;
     }
 
+    /**
+     * insert_td implements top dow strategy of spliting "234 nodes" on the way down the tree to insert,
+     * Throws an IllegalArgumentException when trying to insert duplicates
+     * @param key the String to be inserted
+     * @return
+     */
     public RedBlackNode insert_td(String key){
         this.setIsRoot(true);
         return cleanup(insert_tdHelper(this,key));
@@ -231,6 +253,13 @@ public class RedBlackNode {
         }
     }//end insert_tdHelper
 
+    /**
+     * insert_bu implements bottom up strategy of fixing red-red issues by spliting
+     * "full" 234 Nodes on the way back up the tree when the recursive calls are returning
+     * Throws an IllegalArgumentException when trying to insert duplicates
+     * @param key the String to be inserted
+     * @return
+     */
     public RedBlackNode insert_bu(String key){
         this.setIsRoot(true);
         return cleanup(pushBlackDownBU(insert_buHelper(this,key)));
@@ -266,6 +295,11 @@ public class RedBlackNode {
         }
     }//end insert_buHelper
 
+    /**
+     * cleans up black uncle case 4 and 5 problems
+     * @param current the current RB node
+     * @return
+     */
     public static RedBlackNode cleanup(RedBlackNode current){
         fixupRotateToRight(current);
         fixupRotateToLeftThenRight(current);
@@ -274,6 +308,11 @@ public class RedBlackNode {
         return current;
     }
 
+    /**
+     * cleans up red uncle case 3 problems
+     * @param current the current RB node
+     * @return
+     */
     public static RedBlackNode pushBlackDownBU(RedBlackNode current){
         fixupRedLL(current);
         fixupRedLR(current);
@@ -281,6 +320,7 @@ public class RedBlackNode {
         fixupRedRL(current);
         return current;
     }
+    //TODO these are public for JUnit testing only
     public static void fixupRedLL(RedBlackNode current){
         if ( current.isBlack() == true                      &&
         current.getRight().isBlack() == false           &&
@@ -358,7 +398,7 @@ public class RedBlackNode {
 
         }
     }
-    //TODO fix this
+
     public static void fixupRotateToLeft(RedBlackNode current){
         if ( current.isBlack() == true                        &&
              current.getLeft().isBlack() == true              &&
@@ -392,6 +432,12 @@ public class RedBlackNode {
                 current.getRight().setLeft(current.getRight().getLeft().getRight());
         }
     }
+
+    /**
+     * used in top down to proactively "split" "full" 2-3-4 nodes or the RB widget of said node
+     * @param current the current RB node
+     * @return
+     */
     private static RedBlackNode pushBlackDown(RedBlackNode current){
         if (current.getLeft() != null && current.getLeft().isBlack()  == false &&
            current.getRight() != null && current.getRight().isBlack() == false    ){
@@ -449,7 +495,7 @@ public class RedBlackNode {
         if (this.isBlack() == true) return "black";
         return "red";
     }
-
+    // These are acessor and mutator methods for the class
     public String getKey(){
         return key;
     }
